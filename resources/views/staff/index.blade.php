@@ -34,7 +34,7 @@
             <th>Phone</th>
             <th width="280px">Action</th>
         </tr>
-        @foreach ($Staffs as $item)
+        @foreach ($Staff as $item)
         <tr>
             <td>{{ $item->id }}</td>
             <td>

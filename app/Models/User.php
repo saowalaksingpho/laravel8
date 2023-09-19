@@ -43,15 +43,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function profile(){
-        return $this->hasOne(Profile::class, 'user_id', 'id' );
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'user_id', 'id');
     }
- 
-    public function vehicles(){
+
+    public function vehicles()
+    {
         return $this->hasMany(Vehicle::class, 'user_id', 'id');
     }
 
-    public function post(){
+    public function post()
+    {
         return $this->hasMany(post::class, 'user_id', 'id');
     }
 
@@ -59,5 +62,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Quotation::class, 'quotation_id');
     }
+    public function userLeaveRequests()
+    {
+        return $this->hasMany(LeaveRequest::class, 'user_id');
+    }
 
+    public function approverLeaveRequests()
+    {
+        return $this->hasMany(LeaveRequest::class, 'approver_id');
+    }
 }

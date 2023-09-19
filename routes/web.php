@@ -13,6 +13,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\QuotationDetailController;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Controllers\LeaveRequestController;
+use App\Http\Controllers\LeaveTypeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -157,4 +160,20 @@ Route::get('/test/pdf', function(){
     $c = "ทดสอบภาษาไทย";
     $pdf = Pdf::loadView('testpdf', compact('a','b','c'));
     return $pdf->stream();
+});
+
+Route::resource('leave-request', 'LeaveRequestController');
+Route::resource('leave-type', 'LeaveTypeController');
+
+Route::middleware(['auth'])->group(function () {
+    Route::middleware(['role:admin,guest'])->group(function () {
+        Route::resource('leave-request', LeaveRequestController::class)->except(['edit','update']);
+    });
+    Route::middleware(['role:admin'])->group(function () {
+        Route::resource('leave-request', LeaveRequestController::class)->only(['edit','update']);
+        Route::resource('leave-type', LeaveTypeController::class);
+        Route::get("dashboard-leave", function () {
+            return view("dashboard-leave");
+        });
+    });
 });
